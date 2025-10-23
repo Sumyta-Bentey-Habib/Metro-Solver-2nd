@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router";
 import Home from "../pages/Dashboard";
-import EmployeeDirectory from "../components/EmployeeDirectory";
+import EmployeeDirectory from "../pages/EmployeeDirectory";
 import HomeLayout from "../layouts/HomeLayout";
 import Dashboard from "../pages/Dashboard";
+import Calendar from "../pages/Calendar";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
         path: "/employees",
         element: <EmployeeDirectory></EmployeeDirectory>,
       },
+      {
+        path: "/calendar",
+        element:<Calendar></Calendar>
+      }
     ],
   },
 ]);

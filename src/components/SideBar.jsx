@@ -48,7 +48,7 @@ const SideBar = () => {
     { name: "Recruitment", icon: MdOutlineDescription },
     { name: "Messages", icon: AiOutlineMessage },
     { name: "Task", icon: MdOutlineTask },
-    { name: "Calendar", icon: AiOutlineCalendar },
+    { name: "Calendar", icon: AiOutlineCalendar, path: "/calendar" },
     { name: "Project Collaboration", icon: MdOutlineGroups },
     { name: "HMRC", icon: MdOutlineDescription },
     { name: "NewsFeed", icon: MdOutlineFeed },
