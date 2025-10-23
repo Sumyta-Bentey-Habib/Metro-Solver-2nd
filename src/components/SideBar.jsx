@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import image from "../assets/gifs/Frame.gif";
 import {
   AiOutlineDashboard,
   AiOutlineClockCircle,
@@ -28,7 +29,9 @@ const Logo = ({ collapsed }) => (
       collapsed ? "justify-center py-5" : "p-4"
     }`}
   >
-    <div className="h-8 w-8 bg-indigo-500 rounded-full mr-2"></div>
+    <div className="w-8 ">
+      <img src={image} alt="Logo" className="h-full w-full object-cover rounded-full" />
+    </div>
     {!collapsed && <span className="text-lg font-semibold text-gray-800">METRO SOLVE</span>}
   </div>
 );
