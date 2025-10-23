@@ -142,7 +142,6 @@ const Dashboard = () => {
                     </button>
                 </div>
             </div>
-
             <div className="grid grid-cols-4 gap-4 mb-8">
                 {kpiData.map((data, index) => <KpiCard key={index} {...data} />)}
             </div>
@@ -194,6 +193,7 @@ const Dashboard = () => {
                                     Monthly <AiOutlineDown className="ml-1 w-3 h-3" />
                                 </button>
                             </div>
+
                             <div className="relative h-64 border rounded-lg p-2">
                                 <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between h-full py-1 text-xs text-gray-500 pr-2">
                                     {chartYAxis.map((label, index) => <div key={index} className="h-6 flex items-center">{label}</div>)}
@@ -210,8 +210,46 @@ const Dashboard = () => {
                                         ))}
                                     </div>
 
+                                    {/* Animated Glow Chart */}
                                     <svg viewBox="0 0 600 200" preserveAspectRatio="none" className="absolute top-0 left-0 w-full h-full">
-                                        <path d={chartPath} fill="none" stroke="#8B5CF6" strokeWidth="2" />
+                                        <defs>
+                                            <linearGradient id="chart-gradient" x1="0" y1="0" x2="1" y2="0">
+                                                <stop offset="0%" stopColor="#8B5CF6" />
+                                                <stop offset="50%" stopColor="#6D28D9" />
+                                                <stop offset="100%" stopColor="#4C1D95" />
+                                            </linearGradient>
+                                            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                                <feGaussianBlur stdDeviation="4" result="blur" />
+                                                <feMerge>
+                                                    <feMergeNode in="blur" />
+                                                    <feMergeNode in="blur" />
+                                                    <feMergeNode in="SourceGraphic" />
+                                                </feMerge>
+                                            </filter>
+                                        </defs>
+
+                                        {/* Glow path */}
+                                        <path 
+                                            d={chartPath} 
+                                            fill="none" 
+                                            stroke="url(#chart-gradient)" 
+                                            strokeWidth="4" 
+                                            filter="url(#glow)" 
+                                            strokeLinecap="round"
+                                        >
+                                            <animate 
+                                                attributeName="stroke-dashoffset" 
+                                                from="600" 
+                                                to="0" 
+                                                dur="2s" 
+                                                repeatCount="indefinite" 
+                                            />
+                                        </path>
+
+                                        {/* Main line */}
+                                        <path d={chartPath} fill="none" stroke="#8B5CF6" strokeWidth="2" strokeLinecap="round" />
+
+                                        {/* Bottom line */}
                                         <path d="M 0 160 L 600 160" fill="none" stroke="#8B5CF6" strokeWidth="2" opacity="0.3" />
                                     </svg>
                                 </div>
