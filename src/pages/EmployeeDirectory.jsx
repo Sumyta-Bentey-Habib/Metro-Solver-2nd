@@ -21,7 +21,7 @@ import {
 import { MdOutlineEdit } from 'react-icons/md';
 
 const EmployeeCard = ({ name, title, location, isCEO = false }) => (
-    <div className={`flex flex-col items-center p-4 rounded-lg shadow-lg border w-40 bg-white ${isCEO ? 'border-gray-300' : 'border-gray-200'} relative`}>
+    <div className={`flex flex-col items-center p-4 rounded-lg shadow-lg border w-full sm:w-40 bg-white ${isCEO ? 'border-gray-300' : 'border-gray-200'} relative`}>
         <div className="mb-2">
             <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden border border-gray-400">
                 <AiOutlineUser className="w-8 h-8 text-gray-600" />
@@ -41,9 +41,10 @@ const EmployeeCard = ({ name, title, location, isCEO = false }) => (
 );
 
 const OrgChartStructure = () => (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
         <div className="flex flex-col items-center relative">
-            <div className="mb-10 relative z-10">
+            {/* CEO */}
+            <div className="mb-10 z-10">
                 <EmployeeCard
                     name="Tashvan Khan"
                     title="Founder - CEO"
@@ -52,33 +53,46 @@ const OrgChartStructure = () => (
                 />
             </div>
 
-            <div className="absolute top-[80px] w-0.5 h-10 bg-gray-300 z-0"></div> 
-            <div className="absolute top-[120px] w-96 h-0.5 bg-gray-300 z-0"></div> 
-
-            <div className="flex justify-center space-x-20 w-full relative z-10">
-                <div className="relative">
-                    <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 w-0.5 h-10 bg-gray-300"></div>
-                    <EmployeeCard name="Herry Kane" title="Engineering" location="London Office" />
-                </div>
-                <div className="relative">
-                    <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 w-0.5 h-10 bg-gray-300"></div>
-                    <EmployeeCard name="Herry Brooks" title="Commercial" location="London Office" />
-                </div>
-                <div className="relative">
-                    <div className="absolute top-[-10px] left-1/2 transform -translate-x-1/2 w-0.5 h-10 bg-gray-300"></div>
-                    <EmployeeCard name="David Warner" title="Finance" location="Boston HQ" />
-                </div>
+            {/* First row */}
+            <div className="flex flex-wrap justify-center gap-4 md:gap-20 w-full mt-4">
+                {[
+                    { name: "Herry Kane", title: "Engineering", location: "London Office" },
+                    { name: "Herry Brooks", title: "Commercial", location: "London Office" },
+                    { name: "David Warner", title: "Finance", location: "Boston HQ" }
+                ].map((emp, idx) => (
+                    <div className="relative" key={idx}>
+                        <EmployeeCard {...emp} />
+                        {/* Line to CEO */}
+                        <div className="absolute -top-4 left-1/2 w-0.5 h-4 bg-gray-300 transform -translate-x-1/2"></div>
+                    </div>
+                ))}
             </div>
 
-            <div className="flex justify-center space-x-16 mt-20 w-full relative z-10">
-                <EmployeeCard name="Azam Khan" title="Marketing" location="Boston HQ" />
-                <EmployeeCard name="Tim David" title="HR Management" location="Boston HQ" />
-                <EmployeeCard name="Joe Root" title="Account Executive" location="Boston HQ" />
+            {/* Second row */}
+            <div className="flex flex-wrap justify-center gap-4 md:gap-16 mt-10">
+                {[
+                    { name: "Azam Khan", title: "Marketing", location: "Boston HQ" },
+                    { name: "Tim David", title: "HR Management", location: "Boston HQ" },
+                    { name: "Joe Root", title: "Account Executive", location: "Boston HQ" }
+                ].map((emp, idx) => (
+                    <div className="relative" key={idx}>
+                        <EmployeeCard {...emp} />
+                        <div className="absolute -top-4 left-1/2 w-0.5 h-4 bg-gray-300 transform -translate-x-1/2"></div>
+                    </div>
+                ))}
             </div>
 
-            <div className="flex justify-center space-x-40 mt-20 w-full relative z-10">
-                <EmployeeCard name="Hames James" title="Account Executive" location="Boston HQ" />
-                <EmployeeCard name="Jaman Khan" title="Engineering" location="Boston HQ" />
+            {/* Third row */}
+            <div className="flex flex-wrap justify-center gap-4 md:gap-40 mt-10">
+                {[
+                    { name: "Hames James", title: "Account Executive", location: "Boston HQ" },
+                    { name: "Jaman Khan", title: "Engineering", location: "Boston HQ" }
+                ].map((emp, idx) => (
+                    <div className="relative" key={idx}>
+                        <EmployeeCard {...emp} />
+                        <div className="absolute -top-4 left-1/2 w-0.5 h-4 bg-gray-300 transform -translate-x-1/2"></div>
+                    </div>
+                ))}
             </div>
         </div>
     </div>
@@ -102,7 +116,6 @@ const EmployeeDirectory = () => {
         { name: 'Wellness', icon: 'BsHeartPulse' }, 
     ];
 
-    // Employee names for search
     const employees = [
         "Tashvan Khan",
         "Herry Kane",
@@ -130,9 +143,9 @@ const EmployeeDirectory = () => {
         <div className="flex flex-col h-full bg-white">
 
             {/* Header */}
-            <div className="flex justify-between items-center mb-6 px-6 pt-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 px-6 pt-6 gap-4 sm:gap-0">
                 <h1 className="text-xl font-semibold text-gray-800">People Directory</h1>
-                <div className="flex space-x-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                     <button className="flex items-center px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50">
                         <AiOutlineExport className="mr-2" /> Export
                     </button>
@@ -162,8 +175,8 @@ const EmployeeDirectory = () => {
             </div>
 
             {/* Search */}
-            <div className="flex justify-between items-center mb-6 px-6 relative">
-                <div className="relative w-96">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 px-6 gap-4 sm:gap-0 relative">
+                <div className="relative w-full sm:w-96">
                     <AiOutlineSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     <input
                         type="text"
@@ -194,7 +207,7 @@ const EmployeeDirectory = () => {
 
             {/* Org Chart */}
             <div className="flex-grow relative overflow-hidden">
-                <div className="absolute inset-0 overflow-auto bg-gray-50 border border-gray-200 rounded-lg mx-6 mb-6">
+                <div className="absolute inset-0 overflow-auto bg-gray-50 border border-gray-200 rounded-lg mx-2 sm:mx-6 mb-6">
                     <OrgChartStructure />
                 </div>
             </div>
@@ -202,7 +215,7 @@ const EmployeeDirectory = () => {
             {/* Modal */}
             {modalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm">
-                    <div className="bg-white rounded-lg p-6 w-96 relative">
+                    <div className="bg-white rounded-lg p-6 w-full max-w-sm relative">
                         <h2 className="text-lg font-semibold mb-4">Create New Employee</h2>
                         <form className="flex flex-col space-y-3">
                             <input type="text" placeholder="First Name" className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />

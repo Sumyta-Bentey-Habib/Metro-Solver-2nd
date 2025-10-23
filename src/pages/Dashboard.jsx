@@ -19,7 +19,9 @@ const KpiCard = ({ title, value, percentage, isPositive, chartColor }) => (
                     {isPositive ? `+${percentage}` : percentage}
                 </span>
             </div>
-            <p className="text-xs text-gray-400 mt-1">improved from last month</p>
+            {/* Reduced text for better fit on small cards */}
+            <p className="text-xs text-gray-400 mt-1 hidden sm:block">improved from last month</p>
+            <p className="text-xs text-gray-400 mt-1 sm:hidden">from last month</p>
         </div>
         <div className="w-16 h-10 flex items-center justify-center">
             <AiOutlineLineChart className="w-full h-full" style={{ color: chartColor }} />
@@ -28,8 +30,9 @@ const KpiCard = ({ title, value, percentage, isPositive, chartColor }) => (
 );
 
 // --- Sub-Component 2: Financial Card ---
+// Added col-span-1 for responsiveness inside the small 2-col grid
 const FinancialCard = ({ title, value, isQuarterly = false, percentage = null }) => (
-    <div className="bg-white p-4 rounded-xl border border-gray-100 h-full flex flex-col justify-between">
+    <div className="bg-white p-4 rounded-xl border border-gray-100 h-full flex flex-col justify-between col-span-1">
         <h3 className="text-sm font-semibold text-gray-700">{title}</h3>
         <span className="text-2xl font-bold text-gray-900 mt-1">{value}</span>
         
@@ -56,27 +59,24 @@ const AlertItem = ({ text, tag, tagColor, time, icon: Icon }) => (
         <div className="flex items-center">
             <Icon className="w-5 h-5 text-gray-400 mr-4 mt-1" />
             <div>
-                <div className="flex items-center">
-                    <p className="text-sm font-medium text-gray-800">{text}</p>
-                    <span className={`ml-3 px-2 py-0.5 text-xs font-semibold rounded-full ${tagColor}`}>
+                <div className="flex items-center flex-wrap">
+                    <p className="text-sm font-medium text-gray-800 mr-3">{text}</p>
+                    <span className={`px-2 py-0.5 text-xs font-semibold rounded-full mt-1 sm:mt-0 ${tagColor}`}>
                         {tag}
                     </span>
                 </div>
-                {tag === 'Critical' && (
-                    <p className="text-xs text-gray-500 mt-1">Marketing department exceeded monthly budget by 15%</p>
-                )}
-                {tag === 'Warning' && text === 'Performance Reviews Due' && (
-                    <p className="text-xs text-gray-500 mt-1">5 employee performance reviews due this week</p>
-                )}
-                {tag === 'Approved' && (
-                    <p className="text-xs text-gray-500 mt-1">Q3 Marketing campaign launching tomorrow</p>
-                )}
-                {tag === 'Alert' && (
-                    <p className="text-xs text-gray-500 mt-1">Attendance rate dropped to 85% this week</p>
+                {/* Simplified conditional text for brevity on small screens */}
+                {(tag === 'Critical' || tag === 'Warning' || tag === 'Approved' || tag === 'Alert') && (
+                    <p className="text-xs text-gray-500 mt-1 hidden sm:block">
+                        {tag === 'Critical' && 'Marketing department exceeded monthly budget by 15%'}
+                        {tag === 'Warning' && text === 'Performance Reviews Due' && '5 employee performance reviews due this week'}
+                        {tag === 'Approved' && 'Q3 Marketing campaign launching tomorrow'}
+                        {tag === 'Alert' && 'Attendance rate dropped to 85% this week'}
+                    </p>
                 )}
             </div>
         </div>
-        <span className="text-xs text-gray-500">{time}</span>
+        <span className="text-xs text-gray-500 ml-4 whitespace-nowrap">{time}</span>
     </div>
 );
 
@@ -129,10 +129,10 @@ const Dashboard = () => {
     const chartPath = "M 0 160 C 50 160, 100 80, 150 120 C 200 160, 250 80, 300 80 C 350 80, 400 120, 450 100 C 500 80, 550 40, 600 20";
 
     return (
-        <div className="p-6 bg-gray-50 min-h-screen">
+        <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
             {/* --- Section 1: Employee Management (KPIs) --- */}
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">Employee Management</h2>
+            <div className="flex justify-between items-center flex-wrap mb-4">
+                <h2 className="text-xl font-semibold text-gray-800 mb-2 sm:mb-0">Employee Management</h2>
                 <div className="flex items-center space-x-2">
                     <button className="flex items-center text-sm px-3 py-1 border border-gray-300 rounded-lg bg-white">
                         Monthly <AiOutlineDown className="ml-1 w-3 h-3" />
@@ -142,25 +142,30 @@ const Dashboard = () => {
                     </button>
                 </div>
             </div>
-            <div className="grid grid-cols-4 gap-4 mb-8">
+            {/* Responsiveness: 2 columns on small screens, 4 columns on medium/large */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 {kpiData.map((data, index) => <KpiCard key={index} {...data} />)}
             </div>
 
             {/* --- Section 2 & 3: Recruitment Chart & Financial Stats --- */}
-            <div className="grid grid-cols-12 gap-6 mb-8">
-                <div className="col-span-8 bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-semibold text-gray-800">Recruitment & Employee Engagement</h2>
+            {/* Responsiveness: 1 column on small, 12 columns on medium/large with specific col-spans */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+                {/* Recruitment Chart */}
+                {/* Takes full width on small screens, 8 columns on medium/large */}
+                <div className="col-span-12 md:col-span-8 bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-100">
+                    <div className="flex justify-between items-center mb-6 flex-wrap">
+                        <h2 className="text-xl font-semibold text-gray-800 mb-2 sm:mb-0">Recruitment & Employee Engagement</h2>
                         <button className="bg-indigo-600 text-white text-sm px-3 py-1 rounded-lg hover:bg-indigo-700">
                             View Details
                         </button>
                     </div>
 
-                    <div className="flex items-start">
+                    {/* Responsiveness: Stack dropdown and chart vertically on small screens */}
+                    <div className="flex flex-col md:flex-row items-start">
                         {/* Dropdown Menu */}
-                        <div className="w-40 mr-6 relative z-10" ref={dropdownRef}>
+                        <div className="w-full md:w-40 mb-4 md:mb-0 md:mr-6 relative z-10" ref={dropdownRef}>
                             <button 
-                                className="flex items-center justify-between w-full text-sm font-semibold p-2 rounded-lg bg-indigo-600 text-white mb-2"
+                                className="flex items-center justify-between w-full text-sm font-semibold p-2 rounded-lg bg-indigo-600 text-white"
                                 onClick={() => setDropdownOpen(!dropdownOpen)}
                             >
                                 {activeChartItem} <AiOutlineDown className="w-4 h-4" />
@@ -187,14 +192,17 @@ const Dashboard = () => {
                         </div>
 
                         {/* Chart Area */}
-                        <div className="flex-1">
+                        {/* Takes remaining width on large screens, full width on small screens */}
+                        <div className="w-full md:flex-1">
                             <div className="flex justify-end mb-4">
                                 <button className="flex items-center text-sm px-3 py-1 border border-gray-300 rounded-lg bg-white">
                                     Monthly <AiOutlineDown className="ml-1 w-3 h-3" />
                                 </button>
                             </div>
 
-                            <div className="relative h-64 border rounded-lg p-2">
+                            {/* Chart SVG container: Adjusted h-48 for better mobile fit */}
+                            <div className="relative h-48 sm:h-64 border rounded-lg p-2">
+                                {/* Y-Axis Labels */}
                                 <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between h-full py-1 text-xs text-gray-500 pr-2">
                                     {chartYAxis.map((label, index) => <div key={index} className="h-6 flex items-center">{label}</div>)}
                                 </div>
@@ -254,11 +262,13 @@ const Dashboard = () => {
                                     </svg>
                                 </div>
 
+                                {/* X-Axis Labels */}
                                 <div className="absolute bottom-0 left-0 right-0 h-4 pl-10 flex justify-between text-xs text-gray-500">
                                     {chartXAxis.map((label, index) => <span key={index} className="flex-1 text-center">{label}</span>)}
                                 </div>
 
-                                <div className="absolute top-[60%] left-[55%] transform -translate-x-1/2 -translate-y-full bg-white border border-gray-300 px-3 py-1 rounded-lg shadow-md text-sm font-semibold whitespace-nowrap">
+                                {/* Tooltip / Callout */}
+                                <div className="absolute top-[60%] left-[55%] transform -translate-x-1/2 -translate-y-full bg-white border border-gray-300 px-3 py-1 rounded-lg shadow-md text-sm font-semibold whitespace-nowrap hidden sm:block">
                                     Job Open 320
                                 </div>
                             </div>
@@ -266,8 +276,11 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="col-span-4 flex flex-col space-y-4">
+                {/* Financial Stats */}
+                {/* Takes full width on small screens, 4 columns on medium/large */}
+                <div className="col-span-12 md:col-span-4 flex flex-col space-y-4">
                     <h2 className="text-xl font-semibold text-gray-800">Financial & Sales Statistic</h2>
+                    {/* Responsiveness: 2 columns grid for the first two cards */}
                     <div className="grid grid-cols-2 gap-4">
                         <FinancialCard title="Total Earning" value="£8593.65" />
                         <FinancialCard title="Total Expenses" value="£3570.50" />
@@ -276,9 +289,10 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-semibold text-gray-800">Alerts & Notifications</h2>
+            {/* --- Section 4: Alerts & Notifications --- */}
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-100">
+                <div className="flex justify-between items-center flex-wrap mb-4">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-2 sm:mb-0">Alerts & Notifications</h2>
                     <div className="flex items-center space-x-2">
                         <button className="flex items-center text-sm px-3 py-1 border border-gray-300 rounded-lg bg-white">
                             Monthly <AiOutlineDown className="ml-1 w-3 h-3" />
